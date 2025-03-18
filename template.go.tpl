@@ -100,6 +100,18 @@ func (s *{{$.Name}}) {{ .HandlerName }} (ctx *gin.Context) {
 		return
 	}
 {{end}}
+
+	type Validate interface {
+		Validate() error
+	}
+
+	if v, ok := any(&in).(Validate); ok {
+		if err := v.Validate(); err != nil {
+			s.resp.Error(ctx, err)
+			return
+		}
+	}
+	
 	md := metadata.New(nil)
 	for k, v := range ctx.Request.Header {
 		md.Set(k, v...)

@@ -14,10 +14,11 @@
 注意由于使用 embed 特性，Go 版本必须大于 1.16
 
 ```bash
-go install github.com/mohuishou/protoc-gen-go-gin@latest
+go install github.com/xskit/protoc-gen-go-gin@latest
 ```
 
 ## 使用说明
+- 添加 Validate 校验功能
 
 例子见: [example](./example)
 
