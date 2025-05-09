@@ -35,7 +35,7 @@ func (resp default{{$.Name}}Resp) response(ctx *gin.Context, status, code int, m
 
 // Error 返回错误信息
 func (resp default{{$.Name}}Resp) Error(ctx *gin.Context, err error) {
-	code := -1
+	code := 500
 	status := 500
 	msg := "未知错误"
 	
@@ -43,6 +43,20 @@ func (resp default{{$.Name}}Resp) Error(ctx *gin.Context, err error) {
 		msg += ", err is nil"
 		resp.response(ctx, status, code, msg, nil)
 		return
+	}
+
+	type validateError interface {
+		Field() string
+		Reason() string
+		Key() bool
+		Cause() error
+		ErrorName() string
+	}
+	var ve validateError
+	if errors.As(err, &ve) {
+		status = 400
+		code = 400
+		msg = err.Error()
 	}
 
 	type iCode interface{
